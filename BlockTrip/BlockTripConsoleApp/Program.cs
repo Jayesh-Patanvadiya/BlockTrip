@@ -1,11 +1,10 @@
-﻿using BlockTrip.Services;
+﻿using BlockTrip.Model;
+using BlockTrip.Services;
 
 namespace BlockTripConsoleApp
 {
     internal class Program
     {
-
-        // need to config dependency injection 
         public Program()
         {
 
@@ -14,17 +13,28 @@ namespace BlockTripConsoleApp
         {
             try
             {
-                await GetAllBlockTripAutoVehicles();
+               var AllRecords =  await GetAllRecordsBlockTripAutoVehicles();
+                await FilterVehicleType(AllRecords);
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Error : " + ex.Message);
             }
         }
-        public static async Task GetAllBlockTripAutoVehicles()
+        //Pull all records from BlockTripAutoVehicle
+        public static async Task<List<BlockTripAutoVehicle>> GetAllRecordsBlockTripAutoVehicles()
         {
+
             BlockTripAutoVehicleService blockTripAutoVehicleService = new BlockTripAutoVehicleService();
             var result = await blockTripAutoVehicleService.GetAllBlockTripAutoVehicles();
+            return result;
+        }
+        public static async Task<List<BlockTripAutoVehicle>> FilterVehicleType(List<BlockTripAutoVehicle> blockTripAutoVehicles)
+        {
+
+            BlockTripAutoVehicleService blockTripAutoVehicleService = new BlockTripAutoVehicleService();
+            var result = await blockTripAutoVehicleService.GetAllBlockTripAutoVehicles();
+            return result;
         }
 
 

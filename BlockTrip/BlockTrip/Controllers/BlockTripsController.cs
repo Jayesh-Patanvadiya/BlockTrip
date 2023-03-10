@@ -39,9 +39,10 @@ namespace BlockTrip.Controllers
         public async Task<bool> GetBlockTripByDate(int day, int month, int year, int vehcileTypeId)
         {
             var blockTrips = await _blockTripService.GetAllBlockTrips();
-            DateTime requestedDate = new DateTime(year, month, day);
-            DateTime dateTimeNow = DateTime.Now;
-            var result = blockTrips.Where(x => x.StartDT >= dateTimeNow.Date  && x.VehicleId == vehcileTypeId).ToList();
+            DateTime requestedDate = new DateTime(year, month, day,0,0,0, DateTimeKind.Utc);
+
+            var dateTimeNow = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
+            var result = blockTrips.Where(x => x.StartDT >= requestedDate.Date  && x.VehicleId == vehcileTypeId).ToList();
             if (result.Count > 0)
             {
                 return true;
@@ -50,8 +51,8 @@ namespace BlockTrip.Controllers
             {
                 BlockTripReporting blockTripReporting = new BlockTripReporting()
                 {
-                    CreateDT = dateTimeNow,
-                    RequestedDateTime = requestedDate,
+                    CreateDT = dateTimeNow.Date,
+                    RequestedDateTime = requestedDate.Date,
                     VehicleTypeId = vehcileTypeId
                 };
                 await _blockTripReportingService.CreateBlockTripReporting(blockTripReporting);
