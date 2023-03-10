@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlockTrip", "BlockTrip\BlockTrip.csproj", "{28DBD8F1-B375-44B4-9C2F-760C27928D48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlockTrip", "BlockTrip\BlockTrip.csproj", "{28DBD8F1-B375-44B4-9C2F-760C27928D48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlockTripConsoleApp", "BlockTripConsoleApp\BlockTripConsoleApp.csproj", "{75B637A9-0E65-49AB-A97F-6A7502A87671}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{28DBD8F1-B375-44B4-9C2F-760C27928D48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28DBD8F1-B375-44B4-9C2F-760C27928D48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28DBD8F1-B375-44B4-9C2F-760C27928D48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75B637A9-0E65-49AB-A97F-6A7502A87671}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75B637A9-0E65-49AB-A97F-6A7502A87671}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75B637A9-0E65-49AB-A97F-6A7502A87671}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75B637A9-0E65-49AB-A97F-6A7502A87671}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

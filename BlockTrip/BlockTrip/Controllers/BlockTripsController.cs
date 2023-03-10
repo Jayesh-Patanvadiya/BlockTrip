@@ -10,9 +10,11 @@ namespace BlockTrip.Controllers
     public class BlockTripsController : ControllerBase
     {
         IBlockTripsService _blockTripService;
-        public BlockTripsController(IBlockTripsService blockTripService)
+        IBlockTripReportingService _blockTripReportingService;
+        public BlockTripsController(IBlockTripsService blockTripService, IBlockTripReportingService blockTripReportingService)
         {
             _blockTripService = blockTripService;
+            _blockTripReportingService = blockTripReportingService;
         }
         [HttpPost]
         public async Task<BlockTrips> CreateBlockTrip([FromBody] BlockTrips blockTrip)
@@ -31,6 +33,31 @@ namespace BlockTrip.Controllers
         public async Task<BlockTrips> GetBlockTripById(string blockTripId)
         {
             return await _blockTripService.GetBlockTripById(blockTripId);
+        }
+
+        [HttpGet("blockTrip")]
+        public async Task<bool> GetBlockTripByDate(int day, int month, int year, int vehcileTypeId)
+        {
+            var blockTrips = await _blockTripService.GetAllBlockTrips();
+            DateTime requestedDate = new DateTime(year, month, day);
+            DateTime dateTimeNow = DateTime.Now;
+            var result = blockTrips.Where(x => x.StartDT >= dateTimeNow.Date  && x.VehicleId == vehcileTypeId).ToList();
+            if (result.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                BlockTripReporting blockTripReporting = new BlockTripReporting()
+                {
+                    CreateDT = dateTimeNow,
+                    RequestedDateTime = requestedDate,
+                    VehicleTypeId = vehcileTypeId
+                };
+                await _blockTripReportingService.CreateBlockTripReporting(blockTripReporting);
+                return false;
+            }
+
         }
 
 
