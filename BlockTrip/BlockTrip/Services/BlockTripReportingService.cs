@@ -51,7 +51,7 @@ namespace BlockTrip.Services
                     blockTripReportings.Add(blockTripReporting);
                 }
             }
-            return blockTripReportings;
+            return blockTripReportings.OrderByDescending(x=>x.RequestedDateTime).ToList();
 
         }
 

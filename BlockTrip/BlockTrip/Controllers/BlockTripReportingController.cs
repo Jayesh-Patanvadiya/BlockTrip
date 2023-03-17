@@ -24,8 +24,7 @@ namespace BlockTrip.Controllers
         [HttpGet]
         public async Task<List<BlockTripReporting>> GetAllBlockTripReporting()
         {
-            var result =  await _blockTripReportingService.GetAllBlockTripReporting();
-            return result.OrderByDescending(x=>x.RequestedDateTime).ToList();
+            return await _blockTripReportingService.GetAllBlockTripReporting();
         }
 
         [HttpGet("blockTripReportingId")]
