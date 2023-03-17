@@ -22,7 +22,7 @@ namespace BlockTripConsoleApp.Services
         {
             try
             {
-                Console.WriteLine("Used TripAnalyticsRaw api endpoint to Query against the trips table in BigQuery, using the query, to get trip count per hour for all hour periods in the next 1 year");
+                Console.WriteLine("Used TripAnalyticsRaw api endpoint to Query against the trips table in BigQuery, using the query, to get trip count per hour for all hour periods in the next 1 year  \n");
 
                 // Used TripAnalyticsRaw api endpoint to Query against the trips table in BigQuery, using the query, to get trip count per hour for all hour periods in the next 1 year
                 var response = await _blockTripApiClient.GetAsync($"ezx/reporting/api/TripAnalyticsRaw?query={sqlQuery}");
@@ -67,7 +67,7 @@ namespace BlockTripConsoleApp.Services
 
             //execute request
             var response = await _httpClient.ExecuteAsync(request);
-
+            Console.WriteLine(string.Format("CreateBlockTripReporting StatusCode :{0} and Content : {1} and response.ErrorMessage :{2}  \n", response.StatusCode,response.Content,response.ErrorMessage));
 
         }
         public async Task RemoveBlockTripReporting(string blockTripReportingId)
@@ -80,6 +80,7 @@ namespace BlockTripConsoleApp.Services
 
             //execute request
             var response = await _httpClient.ExecuteAsync(request);
+            Console.WriteLine(string.Format("RemoveBlockTripReporting StatusCode :{0} and Content {1}  \n", response.StatusCode, response.Content));
 
         }
     }
