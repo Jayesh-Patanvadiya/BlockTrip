@@ -60,7 +60,14 @@ namespace BlockTrip.Controllers
             }
 
         }
+        [HttpGet("getTotalCount")]
+        public async Task<int> GetTotalCount(DateTime dateTime, int vehcileTypeId)
+        {
+            var getAllBlockTripReporting = await _blockTripReportingService.GetAllBlockTripReporting();
+            var result = getAllBlockTripReporting.Where(x => x.RequestedDateTime == dateTime && x.VehicleTypeId == vehcileTypeId).ToList();
+            return result.Count;
 
+        }
 
         [HttpPut]
         public async Task<BlockTrips> UpdateBlockTrip([FromBody] BlockTrips blockTrip)
