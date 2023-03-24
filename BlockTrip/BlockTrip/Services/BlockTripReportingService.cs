@@ -1,5 +1,6 @@
 ﻿using BlockTrip.Model;
 using Google.Cloud.Firestore;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace BlockTrip.Services
@@ -54,6 +55,31 @@ namespace BlockTrip.Services
             return blockTripReportings.OrderByDescending(x=>x.RequestedDateTime).ToList();
 
         }
+
+        
+        public async Task<List<BlockTripReportingPriceDto>> GetAllBlockTripReportingWithoutPrice()
+        {
+            var result = await GetAllBlockTripReporting();
+            List<BlockTripReportingPriceDto> blockTripReportingPriceDtosList = new List<BlockTripReportingPriceDto>();
+            foreach (var reporting in result)
+            {
+                BlockTripReportingPriceDto blockTripReportingPriceDtos = new BlockTripReportingPriceDto()
+                {
+                    Hour = reporting.Hour,
+                    Id = reporting.Id,
+                    PriceListId = reporting.PriceListId,
+                    RequestedDateTime = reporting.RequestedDateTime,
+                    VehicleTypeId = reporting.VehicleTypeId,
+                    CreateDT = reporting.CreateDT,
+                };
+                blockTripReportingPriceDtosList.Add(blockTripReportingPriceDtos);
+
+            }
+
+            return blockTripReportingPriceDtosList;
+
+        }
+
 
 
         public async Task<BlockTripReporting> UpdateBlockTripReporting(BlockTripReporting blockTripReporting)

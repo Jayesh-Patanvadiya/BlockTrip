@@ -15,5 +15,18 @@ namespace BlockTrip.Model
 
         [FirestoreProperty]
         public DateTime RequestedDateTime { get; set; }
+
+        // Newly Added
+        //Add Price field to BlockTripReporting
+        [FirestoreProperty]
+        public long Price { get; set;}
+        //Add Hour field to BlockTripReporting
+        [FirestoreProperty]
+        public int Hour { get; set; }
+        //Add PriceListId int field to BlockTripReporting
+        [FirestoreProperty]
+        public int PriceListId { get; set; }
+
+
     }
 }

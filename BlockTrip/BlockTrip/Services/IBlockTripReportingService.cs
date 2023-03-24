@@ -12,5 +12,7 @@ namespace BlockTrip.Services
 
         Task<string> DeleteBlockTripReporting(string blockTripReportingId);
 
+        Task<List<BlockTripReportingPriceDto>> GetAllBlockTripReportingWithoutPrice();
+
     }
 }
