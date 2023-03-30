@@ -15,8 +15,10 @@ namespace BlockTripReports
         {
             try
             {
+
                 //Do a GET to obtain ALL BlockTripReports with missing pricing
                 await GetAllBlockTripReportingWithoutPrice();
+                await GetQuote("EZKnYwMDEqMnwtMzMuOTgyNzg2NXwyNS41NDA2NTI3fC0xfDQ5MnwyIERvcmNoZXN0ZXIgUmQsIFNwcmluZ2ZpZWxkLCBHcWViZXJoYSwgNjA3MCwgU291dGggQWZyaWNhfDEwMDd8MXwyOS45NjExfA==", "EZKnYwMDEqM3wtMzMuOTg3MjcxOXwyNS42MTQyOTQ3fC0xfHxQb3J0IEVsaXphYmV0aCBJbnRlcm5hdGlvbmFsIEFpcnBvcnR8MTAwN3wtMXwzMS42MDc5fFBMWg==", 18, 5, 2023, 15, 18, 6981, 1, 21);
 
                 //Console application  shutdown
                 Environment.Exit(1);// exit
@@ -36,28 +38,15 @@ namespace BlockTripReports
             return await blockTripReportingServices.GetAllBlockTripReportingWithoutPrice();
         }
         // Iterate through all records and obtain a price using the quote endpoint.
-        //public static async Task<List<Quote>> GetMaxTripsPerHour(int year, int equipmentVehicleTypeId)
-        //{
-        //    Console.WriteLine("Step 2: Query API to get maxtrips per hour for each vehicle type  \n");
+        public static async Task<List<Quote>> GetQuote(string pickupPlaceId, string dropOffPlaceId, int day, int month, int year, int hour, int minute, int clientId, int vehicleTypeIdCsvList, int pricePlanId)
+        {
+            BlockTripServices blockTripServices = new BlockTripServices();
 
-        //    BlockTripServices blockTripServices = new BlockTripServices();
+            var result = await blockTripServices.GetQuote(pickupPlaceId, dropOffPlaceId, day, month, year, hour, minute, clientId, vehicleTypeIdCsvList, pricePlanId);
+            return result;
+        }
 
-        //    // Used TripAnalyticsRaw api endpoint to Query against the trips table in BigQuery, using the query, to get trip count per hour for all hour periods in the next 1 year                
-
-        //    string sqlQuery = $"SELECT  PickupDT as Date,EXTRACT(day FROM DATETIME(PickupDT)) as PickupDay, EXTRACT(hour FROM DATETIME(PickupDT)) as Hour ,count(EXTRACT(hour FROM DATETIME(PickupDT))) as Counts,EquipmentVehicleTypeId as EquipmentVehicleTypeId, FROM `ezshuttle2020.ezx.trips` WHERE EXTRACT(year FROM DATETIME(PickupDT))={year} and cast(equipmentVehicleTypeId as INT64) = {equipmentVehicleTypeId} group by Date,EquipmentVehicleTypeId order by Date asc";
-        //    Console.WriteLine($"sqlQuery: {sqlQuery}  \n");
-
-        //    var result = await blockTripServices.GetQuote(sqlQuery);
-        //    if (result is not null)
-        //    {
-        //        var trips = result.ToObject<List<Quote>>();
-        //        return trips;
-        //    }
-        //    else
-        //    {
-        //        return new List<Quote>();
-        //    }
-        //}
+        // sync all BlockTripReporting to BigQuery
 
 
     }

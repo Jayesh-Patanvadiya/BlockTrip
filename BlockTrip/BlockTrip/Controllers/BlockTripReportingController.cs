@@ -28,9 +28,12 @@ namespace BlockTrip.Controllers
         }
 
         [HttpGet("blockTripReportingWithoutPrice")]
-        public async Task<List<BlockTripReportingPriceDto>> GetAllBlockTripReportingWithoutPrice()
+        public async Task<List<BlockTripReportingPriceDto>> GetAllBlockTripReportingWithoutPrice(int currentPage, int items)
         {
-            return await _blockTripReportingService.GetAllBlockTripReportingWithoutPrice();
+            var allrecords = await _blockTripReportingService.GetAllBlockTripReportingWithoutPrice();
+            //paged list logic
+            var result = allrecords.Skip((currentPage - 1) * items).Take(items).ToList();
+            return result;
         }
 
         [HttpGet("blockTripReportingId")]
@@ -53,7 +56,7 @@ namespace BlockTrip.Controllers
             return result;
         }
 
-
+        // Use the PUT method on the api to update the price
         [HttpPut]
         public async Task<BlockTripReporting> UpdateBlockTripReporting([FromBody] BlockTripReporting blockTripReporting)
         {

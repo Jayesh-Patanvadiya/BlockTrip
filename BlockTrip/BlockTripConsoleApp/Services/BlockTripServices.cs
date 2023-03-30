@@ -52,12 +52,47 @@ namespace BlockTripConsoleApp.Services
 
         }
 
+        public async Task<List<Quote>> GetQuote(string pickupPlaceId, string dropOffPlaceId, int day, int month, int year, int hour, int minute, int clientId, int vehicleTypeIdCsvList, int pricePlanId)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                string url = string.Format("https://api.ezshuttle.co.za/ezx/quote/api/quote?pickupPlaceId={0}&dropOffPlaceId={1}&day={2}&month={3}&year={4}&hour={5}&minute={6}&clientId={7}&vehicleTypeIdCsvList={8}&pricePlanId={9}", pickupPlaceId, dropOffPlaceId, day, month, year, hour, minute, clientId, vehicleTypeIdCsvList, pricePlanId);
+                var request = new HttpRequestMessage
+                {
+
+                    Method = HttpMethod.Get,
+
+                    RequestUri = new Uri(url),
+                    Headers =
+    {
+        { "Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjpbImRldmVsb3BlciIsIkRFVkVMT1BFUiJdLCJyb2xlIjoiQURNSU5JU1RSQVRPUiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjI5NDA1IiwibmJmIjoxNjgwMTU3NDUwLCJleHAiOjE2ODAyNDU2NTAsImlhdCI6MTY4MDE1OTI1MCwiaXNzIjoiZXpzaHV0dGxlLmNvLnphIiwiYXVkIjoiZXpzaHV0dGxlLmNvLnphIn0.eJHqruIe8PWXg8qpyWpAmWgAlYRIYdqOeNU6GS3YnHY" },
+    },
+                };
+                using (var response = await client.SendAsync(request))
+                {
+                    response.EnsureSuccessStatusCode();
+                    var body = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(body);
+                    var deserialized = JsonConvert.DeserializeObject<List<Quote>>(body);
+                    return deserialized;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
 
         //Use the api to create block trip records for all periods in step 2 where max trip count is greater than the maxtrips allowed obtained in step 1
 
         public async Task CreateBlockTripReporting(BlockTripReporting blockTripReporting)
         {
-            
+
             var request = new RestRequest(_baseUrl, Method.Post);
             request.AddHeader("Content-Type", "application/json");
 
@@ -67,7 +102,7 @@ namespace BlockTripConsoleApp.Services
 
             //execute request
             var response = await _httpClient.ExecuteAsync(request);
-            Console.WriteLine(string.Format("CreateBlockTripReporting StatusCode :{0} and Content : {1} and response.ErrorMessage :{2}  \n", response.StatusCode,response.Content,response.ErrorMessage));
+            Console.WriteLine(string.Format("CreateBlockTripReporting StatusCode :{0} and Content : {1} and response.ErrorMessage :{2}  \n", response.StatusCode, response.Content, response.ErrorMessage));
 
         }
         public async Task RemoveBlockTripReporting(string blockTripReportingId)
@@ -75,7 +110,7 @@ namespace BlockTripConsoleApp.Services
 
             var request = new RestRequest(_baseUrl, Method.Delete);
             request.AddHeader("Content-Type", "application/json");
-            request.AddQueryParameter("blockTripReportingId", blockTripReportingId); 
+            request.AddQueryParameter("blockTripReportingId", blockTripReportingId);
 
 
             //execute request
