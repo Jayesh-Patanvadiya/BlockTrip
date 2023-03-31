@@ -118,5 +118,21 @@ namespace BlockTripConsoleApp.Services
             Console.WriteLine(string.Format("RemoveBlockTripReporting StatusCode :{0} and Content {1}  \n", response.StatusCode, response.Content));
 
         }
+
+        public async Task UpdateBlockTripReporting(BlockTripReporting blockTripReporting)
+        {
+
+            var request = new RestRequest(_baseUrl, Method.Put);
+            request.AddHeader("Content-Type", "application/json");
+
+            var blockTripReportingSerialize = JsonConvert.SerializeObject(blockTripReporting);
+            request.AddParameter("application/json", blockTripReportingSerialize, ParameterType.RequestBody);
+
+
+            //execute request
+            var response = await _httpClient.ExecuteAsync(request);
+            Console.WriteLine(string.Format("UpdateBlockTripReporting StatusCode :{0} and Content : {1} and response.ErrorMessage :{2}  \n", response.StatusCode, response.Content, response.ErrorMessage));
+
+        }
     }
 }
