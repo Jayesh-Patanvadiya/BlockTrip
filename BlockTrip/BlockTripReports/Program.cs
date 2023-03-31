@@ -38,12 +38,10 @@ namespace BlockTripReports
                 await UpdateBlockTripReporting(blockTripReporting);
 
                 //sync all BlockTripReporting to BigQuery
-                await GetMaxTripsPerHour(2022, 1);   //5.337 SECONDs to execute method
+                await GetMaxTripsPerHour(2022, 1);   // approx. 5.337 SECOND to execute method
 
                 watch.Stop();
-                var elapsedMs = watch.ElapsedMilliseconds;
-
-                Console.WriteLine(string.Format("Total time to execute all 4 methods : {0}  \n",elapsedMs));
+                Console.WriteLine(string.Format("Total time for execute all 4 methods : {0}  \n", watch.ElapsedMilliseconds));
 
                 //Console application  shutdown
                 Environment.Exit(1);// exit
@@ -85,27 +83,19 @@ namespace BlockTripReports
         {
 
             // the code that you want to measure comes here
-           
+            Console.WriteLine("Query API to get maxtrips per hour for each vehicle type  \n");
 
-            Console.WriteLine("Step 2: Query API to get maxtrips per hour for each vehicle type  \n");
-
-            BlockTripServices blockTripServices = new BlockTripServices();
 
             // Used TripAnalyticsRaw api endpoint to Query against the trips table in BigQuery, using the query, to get trip count per hour for all hour periods in the next 1 year                
 
             string sqlQuery = $"SELECT  PickupDT as Date,EXTRACT(day FROM DATETIME(PickupDT)) as PickupDay, EXTRACT(hour FROM DATETIME(PickupDT)) as Hour ,count(EXTRACT(hour FROM DATETIME(PickupDT))) as Counts,EquipmentVehicleTypeId as EquipmentVehicleTypeId, FROM `ezshuttle2020.ezx.trips` WHERE EXTRACT(year FROM DATETIME(PickupDT))={year} and cast(equipmentVehicleTypeId as INT64) = {equipmentVehicleTypeId} group by Date,EquipmentVehicleTypeId order by Date asc";
             Console.WriteLine($"sqlQuery: {sqlQuery}  \n");
 
-            var result = await blockTripServices.GetMaxTripsPerHour(sqlQuery);
-            if (result is not null)
-            {
-                var trips = result.ToObject<List<MaxtripsPerHour>>();
-                return trips;
-            }
-            else
-            {
-                return new List<MaxtripsPerHour>();
-            }
+
+            BlockTripServices blockTripServices = new BlockTripServices();
+
+            return await blockTripServices.GetMaxTripsPerHour(sqlQuery);
+
 
         }
 

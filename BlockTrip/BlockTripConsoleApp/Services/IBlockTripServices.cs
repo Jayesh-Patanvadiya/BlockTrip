@@ -1,4 +1,5 @@
 ﻿using BlockTrip.Model;
+using BlockTripConsoleApp.Model;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace BlockTripConsoleApp.Services
 {
     public interface IBlockTripServices
     {
-        Task<JArray> GetMaxTripsPerHour(string sqlQuery);
+        Task<List<MaxtripsPerHour>> GetMaxTripsPerHour(string sqlQuery);
 
         Task CreateBlockTripReporting(BlockTripReporting blockTripReporting);
 

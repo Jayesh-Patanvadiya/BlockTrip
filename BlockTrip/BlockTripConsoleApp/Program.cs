@@ -107,10 +107,10 @@ namespace BlockTripConsoleApp
 
                 //Get records from BlockTripReporting, created on step 3 : CreateBlockTrip()
                 var blockTripReporting = await GetAllRecordsBlockTripReporting();
-                
+
                 //Use the api to create block trip records for all periods in step 2 where max trip count is greater than the maxtrips allowed obtained in step 1
                 var maxTrips = await GetMaxTripsPerHour(DateTime.Now.Year, 1);
-               
+
                 foreach (var tripPerHourAllowed in maxTripAllowDetails)
                 {
                     foreach (var trip in maxTrips)
@@ -160,16 +160,8 @@ namespace BlockTripConsoleApp
             string sqlQuery = $"SELECT  PickupDT as Date,EXTRACT(day FROM DATETIME(PickupDT)) as PickupDay, EXTRACT(hour FROM DATETIME(PickupDT)) as Hour ,count(EXTRACT(hour FROM DATETIME(PickupDT))) as Counts,EquipmentVehicleTypeId as EquipmentVehicleTypeId, FROM `ezshuttle2020.ezx.trips` WHERE EXTRACT(year FROM DATETIME(PickupDT))={year} and cast(equipmentVehicleTypeId as INT64) = {equipmentVehicleTypeId} group by Date,EquipmentVehicleTypeId order by Date asc";
             Console.WriteLine($"sqlQuery: {sqlQuery}  \n");
 
-            var result = await blockTripServices.GetMaxTripsPerHour(sqlQuery);
-            if (result is not null)
-            {
-                var trips = result.ToObject<List<MaxtripsPerHour>>();
-                return trips;
-            }
-            else
-            {
-                return new List<MaxtripsPerHour>();
-            }
+            return await blockTripServices.GetMaxTripsPerHour(sqlQuery);
+            
         }
 
 

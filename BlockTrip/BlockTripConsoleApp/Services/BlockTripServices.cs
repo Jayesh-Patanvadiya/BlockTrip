@@ -1,4 +1,5 @@
 ﻿using BlockTrip.Model;
+using BlockTripConsoleApp.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -18,7 +19,7 @@ namespace BlockTripConsoleApp.Services
             _baseUrl = "http://localhost:5032/api/BlockTripReporting/";
             _httpClient = new RestClient(new Uri(_baseUrl));
         }
-        public async Task<JArray> GetMaxTripsPerHour(string sqlQuery)
+        public async Task<List<MaxtripsPerHour>> GetMaxTripsPerHour(string sqlQuery)
         {
             try
             {
@@ -30,15 +31,9 @@ namespace BlockTripConsoleApp.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    var propertiesToRemove = new[] { "__key__", "__error__", "__has_error__" }.ToList();
-                    var responseAsJArray = JArray.Parse(responseContent);
-                    responseAsJArray.Descendants()
-                        .OfType<JProperty>()
-                        .Where(p => propertiesToRemove.Contains(p.Name))
-                        .ToList()
-                        .ForEach(p => p.Remove());
 
-                    return responseAsJArray;
+                    var deserialized = JsonConvert.DeserializeObject<List<MaxtripsPerHour>>(responseContent);
+                    return deserialized;
                 }
                 else
                 {
